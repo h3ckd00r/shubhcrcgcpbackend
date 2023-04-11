@@ -47,6 +47,14 @@ func main() {
 		log.Fatalf("Failed to create Firestore client: %v", err)
 	}
 
+    //CREATE COUNTERS COLLECTION IF IT DOESN'T EXIST
+    _, err = client.Collection("counters").Doc("counter").Set(context.Background(), map[string]interface{}{
+        "value": 0,
+    })
+    if err != nil {
+        log.Fatalf("Failed to create document: %v", err)
+    }
+
 	//HANDLER
 	http.HandleFunc("/", APIHandler(client))
 
